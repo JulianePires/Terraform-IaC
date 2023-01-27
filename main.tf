@@ -17,9 +17,15 @@ resource "aws_instance" "app_server" {
   ami           = "ami-015e30624fffff117"
   instance_type = "t2.micro"
   key_name      = "acesso_teste"
-  
+  user_data     = <<-EOF
+    #!/bin/bash
+    cd /home/ubuntu
+    echo "<h1>Feito com Terraform!</h1>" > index.html
+    nohup busybox httpd -f -p 8080 &
+                    EOF
+
   tags = {
-    Name = "Servidor Aprendizado IaC"
+    Name = "Instância Teste AWS"
   }
 }
 
