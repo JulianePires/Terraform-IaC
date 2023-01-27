@@ -24,3 +24,10 @@ nohup busybox httpd -f -p 8080 &
 O nohup impede que o servidor seja encerrado
 
 A partir daí, já conseguimos acessar a página através do IPV4 público, na porta 8080 (no caso da instância atual: http://52.67.87.53:8080/)
+
+Para adicionar o Ansible, que irá gerenciar as configurações e ajustes do servidor, temos que criar dois arquivos: playbook.yml que irá conter os scripts que irão rodar no servidor, e hosts.yml que irá conter os hosts
+
+Para executar o playbook com o ansible, utilizamos o comando:
+```
+ansible-playbook playbook.yml -u ubuntu --private-key acesso_teste.pem -i hosts.yml
+```

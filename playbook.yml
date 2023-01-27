@@ -1,0 +1,16 @@
+- hosts: terraform-ansible
+  tasks:
+    - name: criando o arquivo index.html
+      copy:
+        dest: /home/ubuntu/index.html
+        content: <h1>Criado através de script com terraform e ansible</h1>
+    - name: criando o servidor http
+      shell: "nohup busybox httpd -f -p 8080 &"
+    
+    # Utilizando o Python para executar comandos 
+    - name: Instalando o python3 e o virtualenv
+      apt:
+        pkg:
+        - python3
+        - virtualenv
+      become: yes
