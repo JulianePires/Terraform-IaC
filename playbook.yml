@@ -5,14 +5,14 @@
         dest: /home/ubuntu/index.html
         content: <h1>Criado através de script com terraform e ansible</h1>
     - name: criando o servidor http
-      shell: "nohup busybox httpd -f -p 8080 &"
-    
-    # Utilizando o Python para executar comandos 
+      shell: 'nohup busybox httpd -f -p 8080 &'
+
+    # Utilizando o Python para executar comandos
     - name: Instalando o python3 e o virtualenv
       apt:
         pkg:
-        - python3
-        - virtualenv
+          - python3
+          - virtualenv
         update_cache: yes
       become: yes
 
@@ -22,3 +22,17 @@
         name:
           - django
           - djangorestframework
+
+    - name: Iniciando projeto na venv (Django)
+      shell: '. /home/ubuntu/tcc/venv/bin/activate; django-admin startproject setup /home/ubuntu/tcc'
+      ignore_errors: yes
+
+    - name: Alterando o host do arquivo de configuracao do Django
+      lineinfile:
+        path: /home/ubuntu/tcc/setup/settings.py
+        regexp: 'ALLOWED_HOSTS'
+        line: 'ALLOWED_HOSTS = ["*"]'
+        backrefs: yes
+
+    - name: Rodando o projeto iniciado
+      shell: '. /home/ubuntu/tcc/venv/bin/activate; python manage.py runserver 0.0.0.0:8000'
